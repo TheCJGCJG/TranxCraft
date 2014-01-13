@@ -1,14 +1,16 @@
 package com.wickedgaminguk.TranxCraft;
 
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.server.ServerListPingEvent;
@@ -23,7 +25,16 @@ public class TranxListener extends TranxCraft implements Listener {
         TranxCraft.plugin = plugin;
     }
      
-    @EventHandler(priority=EventPriority.HIGH)
+    
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onEntityExplode(EntityExplodeEvent event) {
+        if(!(event.getEntityType().equals(EntityType.PRIMED_TNT))) {
+            TCP_Log.info("A " + WordUtils.capitalizeFully(event.getEntityType().toString().toLowerCase()) + " exploded " + event.getLocation());
+            event.setCancelled(true);
+        }
+    }
+    
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerEvent(PlayerJoinEvent event) {
         int TotalPlayers = plugin.getConfig().getInt("TotalPlayers");
         
@@ -32,11 +43,9 @@ public class TranxListener extends TranxCraft implements Listener {
         plugin.saveConfig();
         Bukkit.broadcastMessage(ChatColor.BLUE + "[Player Counter] " + TotalPlayers + " players have joined in total.");
         
-        /*
-        if(event.getPlayer().getName().equals("kromeblade")) {
-            Bukkit.broadcastMessage(ChatColor.AQUA + "Kromeblade is the lead builder of TranxCraft.");
+        if(event.getPlayer().getName().equals("HeXeRei452")) {
+            Bukkit.broadcastMessage(ChatColor.AQUA + event.getPlayer().getName() + " is the " + ChatColor.DARK_RED + "Owner!");
         }
-        */
         
         if(TCP_ModeratorList.getleadAdmins().contains(event.getPlayer().getName())) {
             Bukkit.broadcastMessage(ChatColor.AQUA + event.getPlayer().getName() + " is a lead Admin.");
@@ -60,7 +69,7 @@ public class TranxListener extends TranxCraft implements Listener {
         
     }
     
-    @EventHandler(priority=EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLogin(PlayerLoginEvent event) {
         
         Player player = event.getPlayer();/*
@@ -73,18 +82,21 @@ public class TranxListener extends TranxCraft implements Listener {
         }*/
         
         if (event.getResult() == PlayerLoginEvent.Result.KICK_FULL) {
-            if(player.hasPermission("tranxcraft.reserved") || TCP_ModeratorList.getDonators().contains(event.getPlayer().getName()) || TCP_ModeratorList.getModerators().contains(event.getPlayer().getName()) || TCP_ModeratorList.getAdmins().contains(event.getPlayer().getName())|| TCP_ModeratorList.getExecutives().contains(event.getPlayer().getName())|| TCP_ModeratorList.getleadAdmins().contains(event.getPlayer().getName())) {
+            if(TCP_ModeratorList.getAllAdmins().contains(event.getPlayer().getName()) || TCP_ModeratorList.getDonators().contains(event.getPlayer().getName())) {
                 kickPlayer(player, event);
                 event.allow();
                 Bukkit.broadcastMessage(ChatColor.AQUA + player.getName() + ChatColor.GREEN + " is a reserved member!");
             }
         }
     }
-
+    /*
     @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
-        Player player = event.getPlayer(); 
+        Player player = event.getPlayer();
         
+        switch(event.getAction()) {
+            
+        }
             if (
                 (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) &&
                 (player.getItemInHand().getType() == Material.FIREWORK) ||
@@ -99,11 +111,66 @@ public class TranxListener extends TranxCraft implements Listener {
                 
                 }
             
+    }*/
+    
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockPlace(BlockPlaceEvent event) {
+        Player player = event.getPlayer();
+        
+        switch (event.getBlockPlaced().getType()) {
+            case FIREWORK: {
+                if(!((TCP_ModeratorList.getAllAdmins().contains(event.getPlayer().getName())))) {
+                    player.sendMessage(ChatColor.RED + "The Use of Fireworks is not permitted on TranxCraft.");
+                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
+                    event.setCancelled(true);
+                }
+                break;
+            }
+            
+            case TNT: {
+                if(!((TCP_ModeratorList.getAllAdmins().contains(event.getPlayer().getName())))) {
+                    player.sendMessage(ChatColor.RED + "The Use of TNT is not permitted on TranxCraft.");
+                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
+                    event.setCancelled(true);
+                }
+                break;
+            }
+            
+            case LAVA:
+            case STATIONARY_LAVA:
+            case LAVA_BUCKET: {
+                if(!((TCP_ModeratorList.getAllAdmins().contains(event.getPlayer().getName())))) {
+                    player.sendMessage(ChatColor.RED + "The Use of Lava is not permitted on TranxCraft.");
+                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
+                    event.setCancelled(true);
+                }
+                break;
+            }
+                
+            case WATER:
+            case STATIONARY_WATER:
+            case WATER_BUCKET: {
+                if(!((TCP_ModeratorList.getAllAdmins().contains(event.getPlayer().getName())))) {
+                    player.sendMessage(ChatColor.RED + "The Use of Water is not permitted on TranxCraft.");
+                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
+                    event.setCancelled(true);
+                }
+                break;
+            }
+                
+            case FIRE: {
+                if(!((TCP_ModeratorList.getAllAdmins().contains(event.getPlayer().getName())))) {
+                    player.sendMessage(ChatColor.RED + "The Use of Fire is not permitted on TranxCraft.");
+                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
+                    event.setCancelled(true);
+                }
+                break;
+            }
+        }
     }
     //Credits to Madgeek1450 & DarthSalamon for this event handler
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onServerPing(ServerListPingEvent event)
-    {
+    public void onServerPing(ServerListPingEvent event) {
         if (TCP_Util.isIPBanned(event.getAddress().getHostAddress())) {
             event.setMotd(ChatColor.RED + "You are banned.");
         }
@@ -118,7 +185,7 @@ public class TranxListener extends TranxCraft implements Listener {
     private void kickPlayer(Player player, PlayerLoginEvent event) {
     Player[] players = TranxCraft.plugin.getServer().getOnlinePlayers();
         for (Player p : players) {
-            if (!p.hasPermission("tranxcraft.kickprevent")) {
+            if (TCP_ModeratorList.getAllAdmins().contains(p.getName()) || TCP_ModeratorList.getDonators().contains(p.getName())) {
                 p.kickPlayer(this.kickMessage);
                 event.allow();
                 TCP_Log.info("Allowed player " + player.getName() + " to join full server by kicking player " + p.getName() + "!");

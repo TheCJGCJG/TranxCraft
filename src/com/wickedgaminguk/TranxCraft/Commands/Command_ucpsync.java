@@ -57,7 +57,6 @@ public class Command_ucpsync extends BukkitCommand<TranxCraft> {
 
             for (Player player : plugin.getServer().getOnlinePlayers()) {
                 
-                //String playerPermission = plugin.permission.getPrimaryGroup(player);
                 String playerPermission = TCP_Util.getPrimaryGroup(player);
                 String playerName = player.getName().toString();
                 try {

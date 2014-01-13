@@ -17,7 +17,7 @@ public class Command_donator extends BukkitCommand {
     @Override
     public boolean run(CommandSender sender, Command command, String commandLabel, String[] args) {
             
-            if(args.length == 0) {
+            if(args.length >4) {
                 sender.sendMessage(TCP_Util.Invalid_Usage);
                 return false;
             }

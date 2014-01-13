@@ -2,7 +2,9 @@
 package com.wickedgaminguk.TranxCraft;
 
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import net.minecraft.server.v1_7_R1.BanEntry;
 import net.minecraft.server.v1_7_R1.BanList;
 import net.minecraft.server.v1_7_R1.MinecraftServer;
@@ -95,5 +97,36 @@ public class TCP_Util extends TranxCraft {
     public static String getPrimaryGroup(Player player) {
         String permission = plugin.permission.getPrimaryGroup(player);  
         return permission;
+    }
+    
+    static String join(Collection<?> items, String sep) {
+        if(items.isEmpty()) {
+            return "";
+        }
+
+        String[] strings = new String[items.size()];
+        int length = sep.length() * (items.size() - 1);
+
+        int idx = 0;
+        for(Object item : items) {
+            String str = item.toString();
+            strings[idx++] = str;
+            length += str.length();
+        }
+
+        char[] chars = new char[length];
+        int pos = 0;
+
+        for(String str : strings) {
+            str.getChars(0, str.length(), chars, pos);
+            pos += str.length();
+
+            if(pos < length) {
+                sep.getChars(0, sep.length(), chars, pos);
+                pos += sep.length();
+            }
+        }
+
+        return new String(chars);
     }
 }

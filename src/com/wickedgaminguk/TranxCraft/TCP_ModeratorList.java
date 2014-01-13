@@ -1,7 +1,10 @@
 
 package com.wickedgaminguk.TranxCraft;
 
+import java.util.ArrayList;
 import java.util.List;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class TCP_ModeratorList {
     
@@ -25,6 +28,25 @@ public class TCP_ModeratorList {
     public static List<String> getExecutives() {
         return Executives;
     }
+    
+    public static List<String> getAllAdmins() {
+        List<String> all = Moderators;
+        all.addAll(Executives);
+        all.addAll(leadAdmins);
+        all.addAll(Admins);
+        
+        List<String> ops = new ArrayList();
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            if(p.isOp()) {
+                String pn = p.getName();
+                ops.add(pn);
+            }
+        }
+        
+        all.addAll(ops);
+        return all;
+    }
+    
     
     public static List<String> getDonators() {
         return Donators;

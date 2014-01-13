@@ -36,7 +36,7 @@ public class Command_tranxcraft extends BukkitCommand {
                     sender.sendMessage(ChatColor.GREEN + "-- Basic TranxCraft Information --");
                     sender.sendMessage(ChatColor.AQUA + "Owner: HeXeRei452/WickedGamingUK");
                     sender.sendMessage(ChatColor.AQUA + "Lead Developer: HeXeRei452/WickedGamingUK");
-                    //sender.sendMessage(ChatColor.AQUA + "Lead Builder: kromeblade");
+                    sender.sendMessage(ChatColor.AQUA + "Plugin Version: " + plugin.getDescription().getVersion());
                     sender.sendMessage(ChatColor.AQUA + "Website: http://www.tranxcraft.com/");
                     sender.sendMessage(ChatColor.AQUA + "Forums: http://www.tranxcraft.com/forums");
                     sender.sendMessage(ChatColor.GREEN + "------------------------");

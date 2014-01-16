@@ -42,7 +42,7 @@ public class TranxListener extends TranxCraft implements Listener {
         plugin.getConfig().set("TotalPlayers", Integer.valueOf(TotalPlayers));
         plugin.saveConfig();
         Bukkit.broadcastMessage(ChatColor.BLUE + "[Player Counter] " + TotalPlayers + " players have joined in total.");
-        
+        Player player = event.getPlayer();
         if(event.getPlayer().getName().equals("HeXeRei452")) {
             Bukkit.broadcastMessage(ChatColor.AQUA + event.getPlayer().getName() + " is the " + ChatColor.DARK_RED + "Owner!");
         }
@@ -65,6 +65,11 @@ public class TranxListener extends TranxCraft implements Listener {
         
         if(TCP_ModeratorList.getDonators().contains(event.getPlayer().getName())) {
             Bukkit.broadcastMessage(ChatColor.AQUA + event.getPlayer().getName() + " is a " + ChatColor.LIGHT_PURPLE + "Donator! <3");
+        }
+        
+        if(!(player.hasPermission("tranxcraft.member"))) {
+            player.sendMessage(ChatColor.GREEN + "Welcome to TranxCraft! To continue, please read the rules then accept them by typing /acceptrules.");
+            Bukkit.dispatchCommand(player, "rules");
         }
         
     }

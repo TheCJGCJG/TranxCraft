@@ -77,7 +77,7 @@ public class TranxCraft extends BukkitPlugin {
             TCP_Twitter.tweet("TranxCraft has been successfully started on " + date);
         }
         catch (TwitterException | IOException ex) {
-        
+            TCP_Log.warning("[TranxCraft] Twitter functionality is broken!\n" + ex);
         }
         
         setupPermissions();

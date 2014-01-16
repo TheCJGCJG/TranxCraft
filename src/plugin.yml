@@ -1,9 +1,9 @@
 name: TranxCraft
 main: com.wickedgaminguk.TranxCraft.TranxCraft
-version: 4.4
+version: 4.5
 authors: [HeXeRei452]
 description: The custom developed plugin for TranxCraft.
-website: http://www.tranxcraft.com/
+website: https://www.tranxcraft.com/
 commands:
     tranxcraft:
       usage: /<command>
@@ -51,3 +51,7 @@ commands:
       usage: /<command> <message>
       description: TranxCraft's Admin Chat
       aliases: [ac, adminchat]
+    acceptrules:
+      usage: /<command>
+      description: Accept TranxCraft's Rules
+      aliases: [ar]

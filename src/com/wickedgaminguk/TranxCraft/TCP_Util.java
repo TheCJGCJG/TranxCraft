@@ -1,13 +1,8 @@
 
 package com.wickedgaminguk.TranxCraft;
 
-import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import net.minecraft.server.v1_7_R1.BanEntry;
-import net.minecraft.server.v1_7_R1.BanList;
-import net.minecraft.server.v1_7_R1.MinecraftServer;
+import net.minecraft.server.v1_7_R1.*;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -18,13 +13,6 @@ public class TCP_Util extends TranxCraft {
     protected Server server;
     public static final String Invalid_Usage = ChatColor.RED + "Invalid Usage.";
     public static final String noPerms = ChatColor.RED + "You don't have permission for this command.";
-    public static final int second = 1;
-    public static final int minute = second * 60;
-    public static final int hour = minute * 60;
-    public static final int day = hour * 24;
-    public static final int week = day * 7;
-    public static final int month = week * 4;
-    public static final int year = month * 12;
    
    //Credits to Steven Lawson/Madgeek & Jerom Van Der Sar/DarthSalamon for various methods.
     public static void banUsername(String name, String reason, String source) {
@@ -78,55 +66,14 @@ public class TCP_Util extends TranxCraft {
         return TranxCraft.plugin.getConfig();
     }
     
-    public static String getDate() {    
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
-        String date = sdf.format(new Date());
-        return date;
-    }
-    /*
-    public static void rollbackPlayer(Player player, int time) {
-        
-        String p = player.getName();
-        CoreProtectAPI CoreProtect = getCoreProtect();
-        
-        if (CoreProtect!=null) { //Ensure we have access to the API
-            CoreProtect.performRollback(p, time, 0, null, null, null);
-        }
-    }*/
-    
     public static String getPrimaryGroup(Player player) {
         String permission = plugin.permission.getPrimaryGroup(player);  
         return permission;
     }
     
-    static String join(Collection<?> items, String sep) {
-        if(items.isEmpty()) {
-            return "";
-        }
-
-        String[] strings = new String[items.size()];
-        int length = sep.length() * (items.size() - 1);
-
-        int idx = 0;
-        for(Object item : items) {
-            String str = item.toString();
-            strings[idx++] = str;
-            length += str.length();
-        }
-
-        char[] chars = new char[length];
-        int pos = 0;
-
-        for(String str : strings) {
-            str.getChars(0, str.length(), chars, pos);
-            pos += str.length();
-
-            if(pos < length) {
-                sep.getChars(0, sep.length(), chars, pos);
-                pos += sep.length();
-            }
-        }
-
-        return new String(chars);
+    public static String hashString(String s) {
+        String f = DigestUtils.sha512Hex(s);
+        TCP_Log.info(s + " hashed into " + f);
+        return s;
     }
 }

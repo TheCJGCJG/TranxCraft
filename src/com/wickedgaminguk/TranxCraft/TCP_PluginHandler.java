@@ -10,16 +10,19 @@ public class TCP_PluginHandler {
         Bukkit.getPluginManager().disablePlugin(plugin);
         Bukkit.getPluginManager().enablePlugin(plugin);
     }
+    
     public static void enablePlugin(Plugin plugin) {
         Bukkit.getPluginManager().enablePlugin(plugin);
     }
+    
     public static void disablePlugin(Plugin plugin) {
         Bukkit.getPluginManager().disablePlugin(plugin);
     }
+    
     public static void reloadServer() {
         Plugin[] plugins = Bukkit.getPluginManager().getPlugins();
-            for (int x = 0; x < plugins.length; x++) {
-                reloadPlugin(plugins[x]);
-            }
+        for (int x = 0; x < plugins.length; x++) {
+            reloadPlugin(plugins[x]);
+        }
     }
 }

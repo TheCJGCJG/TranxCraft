@@ -29,6 +29,7 @@ public class Command_ucpsync extends BukkitCommand<TranxCraft> {
         }
         catch(IllegalArgumentException | IllegalStateException ex) {
             sender.sendMessage("Something went wrong. Check the logs.");
+            TCP_Log.warning(ex);
         }
         
         return true;

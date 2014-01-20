@@ -3,6 +3,7 @@ package com.wickedgaminguk.TranxCraft;
 
 import net.minecraft.server.v1_7_R1.*;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -10,10 +11,11 @@ import org.bukkit.entity.Player;
 
 public class TCP_Util extends TranxCraft {
     
+    static TranxCraft TranxCraft = new TranxCraft();
     protected Server server;
     public static final String Invalid_Usage = ChatColor.RED + "Invalid Usage.";
     public static final String noPerms = ChatColor.RED + "You don't have permission for this command.";
-   
+    
    //Credits to Steven Lawson/Madgeek & Jerom Van Der Sar/DarthSalamon for various methods.
     public static void banUsername(String name, String reason, String source) {
         name = name.toLowerCase().trim();
@@ -67,7 +69,7 @@ public class TCP_Util extends TranxCraft {
     }
     
     public static String getPrimaryGroup(Player player) {
-        String permission = plugin.permission.getPrimaryGroup(player);  
+        String permission = TranxCraft.permission.getPrimaryGroup(player);
         return permission;
     }
     

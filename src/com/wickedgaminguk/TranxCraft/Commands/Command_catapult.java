@@ -18,14 +18,9 @@ public class Command_catapult extends BukkitCommand {
     @Override
     public boolean run(CommandSender sender, Command command, String commandLabel, String[] args) {
         
-        boolean power = false;
         if (sender instanceof Player && !(sender.hasPermission("explosivesmite.catapult") || sender.isOp())) {
             sender.sendMessage(TCP_Util.noPerms);
             return true;
-        }
-        
-        if (args[1].equalsIgnoreCase("-p")) {
-            power = true;
         }
         
         if (args.length == 0 || args.length > 2) {
@@ -47,10 +42,7 @@ public class Command_catapult extends BukkitCommand {
         
         Bukkit.broadcastMessage("" + ChatColor.RED + player.getName() + " has been catapulted!");
         player.setVelocity(new Vector(0,10,0));
-        if(power == true) {
-            player.setLevel(0);
-            player.getInventory().clear();
-        }
+        
         return true;
     }
 }

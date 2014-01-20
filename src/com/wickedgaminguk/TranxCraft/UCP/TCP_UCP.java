@@ -1,8 +1,11 @@
 
 package com.wickedgaminguk.TranxCraft.UCP;
 
-import com.wickedgaminguk.TranxCraft.*;
+import com.wickedgaminguk.TranxCraft.TCP_Log;
+import com.wickedgaminguk.TranxCraft.TCP_Time;
+import com.wickedgaminguk.TranxCraft.TranxCraft;
 import java.sql.SQLException;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -10,14 +13,15 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class TCP_UCP extends BukkitRunnable {
     
     private final TranxCraft plugin;
-
+    TranxCraft TranxCraft = new TranxCraft();
+    Permission permission;
+    
     public TCP_UCP(TranxCraft instance) {
         this.plugin = instance;
     }
 
     @Override
     public void run() {
-        
         TCP_Log.info("[TranxCraft] Starting UCP Sync Now.");
         
         if(Bukkit.getOnlinePlayers().length == 0) {
@@ -46,7 +50,19 @@ public class TCP_UCP extends BukkitRunnable {
 
             for (Player player : plugin.getServer().getOnlinePlayers()) {
                 
-                String playerPermission = TCP_Util.getPrimaryGroup(player);
+                String playerPermission = null;
+                
+                try {
+                    playerPermission = TranxCraft.getPlayerGroup(player);
+                }
+                catch(Exception ex) {
+                    
+                }
+                
+                if(playerPermission == null) {
+                    playerPermission = "Argh - it didn't work. Contact someone with a Java Brain.";
+                }
+                
                 String playerName = player.getName().toString();
                 
                 try {
@@ -56,6 +72,7 @@ public class TCP_UCP extends BukkitRunnable {
                     TCP_Log.severe("SQL Connection Failed.");
                     TCP_Log.severe(ex);
                 }
+                
             }
             TCP_Log.info("UCP Sync Finished.");
         }

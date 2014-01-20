@@ -43,7 +43,7 @@ public class TranxListener extends TranxCraft implements Listener {
         plugin.saveConfig();
         Bukkit.broadcastMessage(ChatColor.BLUE + "[Player Counter] " + TotalPlayers + " players have joined in total.");
         Player player = event.getPlayer();
-        if(event.getPlayer().getName().equals("HeXeRei452")) {
+        if(event.getPlayer().getName().equals("WickedGamingUK")) {
             Bukkit.broadcastMessage(ChatColor.AQUA + event.getPlayer().getName() + " is the " + ChatColor.DARK_RED + "Owner!");
         }
         
@@ -188,7 +188,7 @@ public class TranxListener extends TranxCraft implements Listener {
     }
     
     private void kickPlayer(Player player, PlayerLoginEvent event) {
-    Player[] players = TranxCraft.plugin.getServer().getOnlinePlayers();
+        Player[] players = TranxCraft.plugin.getServer().getOnlinePlayers();
         for (Player p : players) {
             if (TCP_ModeratorList.getAllAdmins().contains(p.getName()) || TCP_ModeratorList.getDonators().contains(p.getName())) {
                 p.kickPlayer(this.kickMessage);

@@ -29,28 +29,37 @@ public class Command_tranxcraft extends BukkitCommand {
     public boolean run(CommandSender sender, Command command, String commandLabel, String[] args) {
         
         TCP_mail = new TCP_Mail();
+        TranxCraft TranxCraft = new TranxCraft();
+        
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");
         Calendar cal = Calendar.getInstance(); 
         
         if(args.length == 0 || args[0].equalsIgnoreCase("info")) {
-                    sender.sendMessage(ChatColor.GREEN + "-- Basic TranxCraft Information --");
-                    sender.sendMessage(ChatColor.AQUA + "Owner: HeXeRei452/WickedGamingUK");
-                    sender.sendMessage(ChatColor.AQUA + "Lead Developer: HeXeRei452/WickedGamingUK");
-                    sender.sendMessage(ChatColor.AQUA + "Plugin Version: " + plugin.getDescription().getVersion());
-                    sender.sendMessage(ChatColor.AQUA + "Website: http://www.tranxcraft.com/");
-                    sender.sendMessage(ChatColor.AQUA + "Forums: http://www.tranxcraft.com/forums");
-                    sender.sendMessage(ChatColor.GREEN + "------------------------");
-                    return true;
-                }
-                if(args[0].equalsIgnoreCase("reload")) {
-                    if(!(sender.hasPermission("tranxcraft.reload") || sender.isOp())){
-                        sender.sendMessage(TCP_Util.noPerms);
-                        return true;
-                    }
-                    if(args.length > 2) {
-                        sender.sendMessage(TCP_Util.Invalid_Usage);
-                        return true;
-                    }
+            sender.sendMessage(ChatColor.GREEN + "-- Basic TranxCraft Information --");
+            sender.sendMessage(ChatColor.AQUA + "Owner: HeXeRei452/WickedGamingUK");
+            sender.sendMessage(ChatColor.AQUA + "Lead Developer: HeXeRei452/WickedGamingUK");
+            sender.sendMessage(ChatColor.AQUA + "Plugin Version: " + plugin.getDescription().getVersion());
+            sender.sendMessage(ChatColor.AQUA + "Plugin Build Number: " + TranxCraft.getBuildNumber());
+            sender.sendMessage(ChatColor.AQUA + "Plugin Build Date: " + TranxCraft.getBuildDate());
+            sender.sendMessage(ChatColor.AQUA + "Website: http://www.tranxcraft.com/");
+            sender.sendMessage(ChatColor.AQUA + "Forums: http://www.tranxcraft.com/forums");
+            sender.sendMessage(ChatColor.GREEN + "------------------------");
+            
+            return true;
+       }
+        
+       if(args[0].equalsIgnoreCase("reload")) {
+           
+           if(!(sender.hasPermission("tranxcraft.reload") || sender.isOp())){
+               sender.sendMessage(TCP_Util.noPerms);               
+               return true;
+           }
+               
+           if(args.length > 2) {
+               sender.sendMessage(TCP_Util.Invalid_Usage);               
+               return true;
+           }
+           
                     if(args.length == 1) {
                         Bukkit.broadcastMessage("[TranxCraft]" + ChatColor.RED + " Server Reloading.");
                         TCP_PluginHandler.reloadServer();

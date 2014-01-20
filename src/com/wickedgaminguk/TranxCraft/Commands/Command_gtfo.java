@@ -21,7 +21,7 @@ public class Command_gtfo extends BukkitCommand {
     @Override
     public boolean run(CommandSender sender, Command command, String commandLabel, String[] args) { 
         
-        if(sender instanceof Player && !(sender.hasPermission("tranxcraft.gtfo") || sender.isOp())){
+        if(sender instanceof Player && !(sender.hasPermission("tranxcraft.gtfo") || sender.isOp())) {
             sender.sendMessage(TCP_Util.noPerms);
             return true;
         }

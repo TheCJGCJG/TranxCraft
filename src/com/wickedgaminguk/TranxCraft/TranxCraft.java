@@ -6,34 +6,36 @@ import com.wickedgaminguk.TranxCraft.Commands.Command_tranxcraft;
 import com.wickedgaminguk.TranxCraft.TCP_Mail.RecipientType;
 import com.wickedgaminguk.TranxCraft.UCP.TCP_UCP;
 import org.mcstats.Metrics;
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Properties;
 import net.milkbowl.vault.permission.Permission;
 import net.pravian.bukkitlib.BukkitLib;
 import net.pravian.bukkitlib.command.BukkitCommandHandler;
 import net.pravian.bukkitlib.config.YamlConfig;
 import net.pravian.bukkitlib.implementation.BukkitPlugin;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.command.*;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.*;
 import twitter4j.TwitterException;
 
 public class TranxCraft extends BukkitPlugin {
+    
     public static TranxCraft plugin = null;
+    public String pluginName;
+    public String pluginVersion;
+    public String pluginAuthor;
+    public String pluginBuildNumber;
+    public String pluginBuildDate;
     public YamlConfig config;
     public BukkitCommandHandler handler;
     public TranxListener listener;
-    public static String pluginName;
-    public String pluginVersion;
-    public String pluginAuthor;
+    public static Permission permission = null;
+    
     PluginManager pm;
     MySQL mySQL;
-    TCP_Mail TCP_mail;
-    public Permission permission;
+    TCP_Mail mail;
     
     @Override
     public void onLoad() {
@@ -47,23 +49,35 @@ public class TranxCraft extends BukkitPlugin {
         
         BukkitLib.init(plugin);
         
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-	String date = sdf.format(new Date());
-        
         this.pm = getServer().getPluginManager();
         
-        pluginName = plugin.getName();
-        pluginVersion = plugin.getVersion();
-        pluginAuthor = plugin.getAuthor();
         config.load();   
+        
         mySQL = new MySQL(plugin, config.getString("HOSTNAME"), config.getString("PORT"), config.getString("DATABASE"), config.getString("USER"), config.getString("PASSWORD"));
-        TCP_mail = new TCP_Mail();
-        handler.setCommandLocation(Command_tranxcraft.class.getPackage());
+        mail = new TCP_Mail();
+        
+        try {
+            final Properties build;
+            
+            try (InputStream in = plugin.getResource("build.properties")) {
+                build = new Properties();
+                build.load(in);
+            }
+
+            pluginBuildNumber = build.getProperty("program.buildnumber");
+            pluginBuildDate = build.getProperty("program.builddate");
+        }
+        catch (Exception ex) {
+            TCP_Log.severe("Could not load build information!");
+            TCP_Log.severe(ex);
+            pluginBuildNumber = "1";
+            pluginBuildDate = TCP_Time.getLongDate();
+        }
         
         TCP_Log.info(pluginName + " version " + pluginVersion + " by " + pluginAuthor + " is enabled");
         
         new TCP_Scheduler(plugin).runTaskTimer(plugin, config.getInt("interval") * 20L, config.getInt("interval") * 20L);
-        new TCP_UCP(plugin).runTaskTimerAsynchronously(plugin, 6000L, 6000L);
+        new TCP_UCP(plugin).runTaskTimer(plugin, 6000L, 6000L);
         
         listener = new TranxListener(plugin);
         register(listener);       
@@ -71,23 +85,26 @@ public class TranxCraft extends BukkitPlugin {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mv unload Spawn_nether");
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mv unload Spawn_the_end");
         TCP_Log.info("[TranxCraft] Hopefully the Nether and End have unloaded!");
-        TCP_mail.send(RecipientType.SYS, "TranxCraft Reports - Server Started", "Hey there, TranxCraft has been successfully started on " + date);
+        
+        mail.send(RecipientType.SYS, "TranxCraft Reports - Server Started", "Hey there, TranxCraft has been successfully started on " + TCP_Time.getDate());
         
         try {
-            TCP_Twitter.tweet("TranxCraft has been successfully started on " + date);
+            TCP_Twitter.tweet("TranxCraft has been successfully started on " + TCP_Time.getDate());
         }
         catch (TwitterException | IOException ex) {
             TCP_Log.warning("[TranxCraft] Twitter functionality is broken!\n" + ex);
         }
         
-        setupPermissions();
+        setupPermissions();;
+        
+        handler.setCommandLocation(Command_tranxcraft.class.getPackage());
         
         try {
             Metrics metrics = new Metrics(this);
             metrics.start();
         }
-        catch (IOException e) {
-            TCP_Log.severe("[" + pluginName + "] Plugin Metrics failed to submit to McStats.");
+        catch (IOException ex) {
+            TCP_Log.severe("[" + pluginName + "] Plugin Metrics failed to submit to McStats.\n " + ex);
         }    
     }
   
@@ -98,8 +115,8 @@ public class TranxCraft extends BukkitPlugin {
     }
   
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        return handler.handleCommand(sender, command, label, args);
+    public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
+        return handler.handleCommand(sender, command, commandLabel, args);
     }
   
     public void updateDatabase(String SQLquery) throws SQLException {
@@ -121,5 +138,18 @@ public class TranxCraft extends BukkitPlugin {
             permission = permissionProvider.getProvider();
         }
         return (permission != null);
+    }
+    
+    public String getBuildNumber() {
+        return pluginBuildNumber;
+    }
+
+    public String getBuildDate() {
+        return pluginBuildDate;
+    }
+    
+    public String getPlayerGroup(Player player) {
+        String perm = permission.getPrimaryGroup(player);
+        return perm;
     }
 }

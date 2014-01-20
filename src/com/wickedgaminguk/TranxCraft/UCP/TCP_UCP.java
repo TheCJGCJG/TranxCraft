@@ -25,17 +25,20 @@ public class TCP_UCP extends BukkitRunnable {
         TCP_Log.info("[TranxCraft] Starting UCP Sync Now.");
         
         if(Bukkit.getOnlinePlayers().length == 0) {
-            TCP_Log.info("No players online, UCP Sync Exiting..");
+            TCP_Log.info("No players online, recreating table...");
             
             try {
                 plugin.updateDatabase("DROP TABLE players");
                 plugin.updateDatabase("CREATE TABLE players ( ID INT NOT NULL AUTO_INCREMENT, InGameName CHAR(30), OnlineTime CHAR(30), Rank CHAR(30), LastUpdated CHAR(30), PRIMARY KEY(ID) )");
-                plugin.updateDatabase("INSERT INTO players (LastUpdated) VALUES ('" + TCP_Time.getDate() + "');");
+                plugin.updateDatabase("INSERT INTO players (LastUpdated) VALUES ('" + TCP_Time.getUnixTimestamp() + "');");
+                TCP_Log.info("Table Recreated");
             }
             catch(SQLException ex) {
                 TCP_Log.severe("SQL Connection Failed.");
                 TCP_Log.severe(ex);
             }
+            
+            TCP_Log.info("UCP Sync Finished.");
         }
         
         if(Bukkit.getOnlinePlayers().length != 0) {
@@ -66,7 +69,7 @@ public class TCP_UCP extends BukkitRunnable {
                 String playerName = player.getName().toString();
                 
                 try {
-                    plugin.updateDatabase("INSERT INTO players (InGameName, OnlineTime, Rank, LastUpdated) VALUES ('" + playerName + "', 98, '" + playerPermission + "', '" + TCP_Time.getDate() + "');");
+                    plugin.updateDatabase("INSERT INTO players (InGameName, OnlineTime, Rank, LastUpdated) VALUES ('" + playerName + "', 98, '" + playerPermission + "', '" + TCP_Time.getUnixTimestamp() + "');");
                 } 
                 catch (SQLException ex) {
                     TCP_Log.severe("SQL Connection Failed.");

@@ -29,7 +29,7 @@ public class TranxListener extends TranxCraft implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityExplode(EntityExplodeEvent event) {
         if(!(event.getEntityType().equals(EntityType.PRIMED_TNT))) {
-            TCP_Log.info("A " + WordUtils.capitalizeFully(event.getEntityType().toString().toLowerCase()) + " exploded " + event.getLocation());
+            TCP_Log.info("A " + WordUtils.capitalizeFully(event.getEntityType().toString().toLowerCase()) + " exploded at: " + event.getLocation().getBlockX() + ", " + event.getLocation().getBlockY() + ", " + event.getLocation().getBlockZ());
             event.setCancelled(true);
         }
     }
@@ -94,29 +94,6 @@ public class TranxListener extends TranxCraft implements Listener {
             }
         }
     }
-    /*
-    @EventHandler
-    public void onRightClick(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        
-        switch(event.getAction()) {
-            
-        }
-            if (
-                (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) &&
-                (player.getItemInHand().getType() == Material.FIREWORK) ||
-                (player.getItemInHand().getType() == Material.TNT) ||
-                (player.getItemInHand().getType() == Material.LAVA || player.getItemInHand().getType() == Material.STATIONARY_LAVA || player.getItemInHand().getType() == Material.LAVA_BUCKET) ||
-                (player.getItemInHand().getType() == Material.WATER || player.getItemInHand().getType() == Material.STATIONARY_WATER || player.getItemInHand().getType() == Material.WATER_BUCKET) ||
-                (player.getItemInHand().getType() == Material.FIRE)) {
-                
-                    player.sendMessage(ChatColor.RED + "The Use of " + event.getItem().getType().toString() + " is not permitted on TranxCraft.");
-                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
-                    event.setCancelled(true);
-                
-                }
-            
-    }*/
     
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockPlace(BlockPlaceEvent event) {
@@ -125,18 +102,22 @@ public class TranxListener extends TranxCraft implements Listener {
         switch (event.getBlockPlaced().getType()) {
             case FIREWORK: {
                 if(!((TCP_ModeratorList.getAllAdmins().contains(event.getPlayer().getName())))) {
-                    player.sendMessage(ChatColor.RED + "The Use of Fireworks is not permitted on TranxCraft.");
-                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
-                    event.setCancelled(true);
+                    if(!(event.getPlayer().getName().equalsIgnoreCase("WickedGamingUK"))) {
+                        player.sendMessage(ChatColor.RED + "The Use of Fireworks is not permitted on TranxCraft.");
+                        player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
+                        event.setCancelled(true);
+                    }
                 }
                 break;
             }
             
             case TNT: {
                 if(!((TCP_ModeratorList.getAllAdmins().contains(event.getPlayer().getName())))) {
-                    player.sendMessage(ChatColor.RED + "The Use of TNT is not permitted on TranxCraft.");
-                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
-                    event.setCancelled(true);
+                    if(!(event.getPlayer().getName().equalsIgnoreCase("WickedGamingUK"))) {
+                        player.sendMessage(ChatColor.RED + "The Use of TNT is not permitted on TranxCraft.");
+                        player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
+                        event.setCancelled(true);
+                    }
                 }
                 break;
             }
@@ -145,9 +126,11 @@ public class TranxListener extends TranxCraft implements Listener {
             case STATIONARY_LAVA:
             case LAVA_BUCKET: {
                 if(!((TCP_ModeratorList.getAllAdmins().contains(event.getPlayer().getName())))) {
-                    player.sendMessage(ChatColor.RED + "The Use of Lava is not permitted on TranxCraft.");
-                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
-                    event.setCancelled(true);
+                    if(!(event.getPlayer().getName().equalsIgnoreCase("WickedGamingUK"))) {
+                        player.sendMessage(ChatColor.RED + "The Use of Lava is not permitted on TranxCraft.");
+                        player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
+                        event.setCancelled(true);
+                    }
                 }
                 break;
             }
@@ -156,18 +139,22 @@ public class TranxListener extends TranxCraft implements Listener {
             case STATIONARY_WATER:
             case WATER_BUCKET: {
                 if(!((TCP_ModeratorList.getAllAdmins().contains(event.getPlayer().getName())))) {
-                    player.sendMessage(ChatColor.RED + "The Use of Water is not permitted on TranxCraft.");
-                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
-                    event.setCancelled(true);
+                    if(!(event.getPlayer().getName().equalsIgnoreCase("WickedGamingUK"))) {
+                        player.sendMessage(ChatColor.RED + "The Use of Water is not permitted on TranxCraft.");
+                        player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
+                        event.setCancelled(true);
+                    }
                 }
                 break;
             }
                 
             case FIRE: {
                 if(!((TCP_ModeratorList.getAllAdmins().contains(event.getPlayer().getName())))) {
-                    player.sendMessage(ChatColor.RED + "The Use of Fire is not permitted on TranxCraft.");
-                    player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
-                    event.setCancelled(true);
+                    if(!(event.getPlayer().getName().equalsIgnoreCase("WickedGamingUK"))) {
+                        player.sendMessage(ChatColor.RED + "The Use of Fire is not permitted on TranxCraft.");
+                        player.getInventory().setItem(player.getInventory().getHeldItemSlot(), new ItemStack(Material.COOKIE, 1));
+                        event.setCancelled(true);
+                    }
                 }
                 break;
             }

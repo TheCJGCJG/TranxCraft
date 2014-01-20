@@ -41,7 +41,7 @@ public class Command_catapult extends BukkitCommand {
         }
         
         Bukkit.broadcastMessage("" + ChatColor.RED + player.getName() + " has been catapulted!");
-        player.setVelocity(new Vector(0,10,0));
+        player.setVelocity(new Vector(5,5,5));
         
         return true;
     }

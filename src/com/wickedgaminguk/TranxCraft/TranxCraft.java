@@ -95,7 +95,7 @@ public class TranxCraft extends BukkitPlugin {
             TCP_Log.warning("[TranxCraft] Twitter functionality is broken!\n" + ex);
         }
         
-        setupPermissions();;
+        setupPermissions();
         
         handler.setCommandLocation(Command_tranxcraft.class.getPackage());
         

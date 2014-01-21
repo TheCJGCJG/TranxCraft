@@ -60,8 +60,9 @@ public class Command_mong extends BukkitCommand {
             }
             else {
                 Bukkit.broadcastMessage(ChatColor.RED + player.getName() + " is a mong, (s)he better read the rules now.");
-                player.kickPlayer(ChatColor.RED + "You have been deemed as a mong by " + sender.getName() + " so you'd better read the website (http://www.tranxcraft.com/) and learn the rules, then create a un-ban request on the forums (http://www.tranxcraft.com/forums)");
-                player.setBanned(true);
+                String Message = ChatColor.RED + "You have been deemed as a mong by " + sender.getName() + " so you'd better read the website (http://www.tranxcraft.com/) and learn the rules, then create a un-ban request on the forums (http://www.tranxcraft.com/forums)";
+                player.kickPlayer(Message);
+                TCP_Util.banUsername(player.getName(), Message, null);
                 return true;
             }
         return true;

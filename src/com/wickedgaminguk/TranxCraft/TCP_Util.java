@@ -3,11 +3,9 @@ package com.wickedgaminguk.TranxCraft;
 
 import net.minecraft.server.v1_7_R1.*;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 
 public class TCP_Util extends TranxCraft {
     
@@ -66,11 +64,6 @@ public class TCP_Util extends TranxCraft {
     
     public static FileConfiguration getConfigFile() {
         return TranxCraft.plugin.getConfig();
-    }
-    
-    public static String getPrimaryGroup(Player player) {
-        String permission = TranxCraft.permission.getPrimaryGroup(player);
-        return permission;
     }
     
     public static String hashString(String s) {

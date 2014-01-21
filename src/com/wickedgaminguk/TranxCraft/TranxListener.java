@@ -1,5 +1,6 @@
 package com.wickedgaminguk.TranxCraft;
 
+import com.wickedgaminguk.TranxCraft.UCP.TCP_UCP;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,6 +14,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -93,6 +95,13 @@ public class TranxListener extends TranxCraft implements Listener {
                 Bukkit.broadcastMessage(ChatColor.AQUA + player.getName() + ChatColor.GREEN + " is a reserved member!");
             }
         }
+        
+        new TCP_UCP(plugin).runTaskAsynchronously(plugin);
+    }
+    
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        new TCP_UCP(plugin).runTaskAsynchronously(plugin);
     }
     
     @EventHandler(priority = EventPriority.HIGH)

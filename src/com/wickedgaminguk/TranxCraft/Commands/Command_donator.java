@@ -26,34 +26,13 @@ public class Command_donator extends BukkitCommand {
             player = getPlayer(args[0]);
                 
             String Player = player.getName();
-            String Sender = sender.getName();
-            
-            if(args[0].equalsIgnoreCase("activate")) {
-                if(sender instanceof Player && sender.hasPermission("tranxcraft.donator")) {
-                    if(args.length >0) {
-                        sender.sendMessage(TCP_Util.Invalid_Usage);
-                        return false;
-                    }
-                    else {
-                        TCP_ModeratorList.getDonators().add(Sender);
-                        plugin.getConfig().set("Donators",TCP_ModeratorList.getDonators());
-                        plugin.saveConfig();
-                        Bukkit.broadcastMessage(ChatColor.GREEN + Sender + " has bought a donator rank and activated it, congratulations!");
-                    }
-                }
-                else {
-                    sender.sendMessage(TCP_Util.noPerms);
-                    return true;
-                }
-            }
             
             if(args[0].equalsIgnoreCase("add")) {
             
-                if(!(sender instanceof Player) || !(sender.getName().equalsIgnoreCase("HeXeRei452"))) {
+                if(!(sender instanceof Player) || !(sender.getName().equalsIgnoreCase("WickedGamingUK"))) {
                     sender.sendMessage(TCP_Util.noPerms);
                     return true;
-                }
-                
+                }                
                 
                 TCP_ModeratorList.getDonators().add(Player);
                 plugin.getConfig().set("Donators",TCP_ModeratorList.getDonators());
@@ -64,7 +43,7 @@ public class Command_donator extends BukkitCommand {
             
             if(args[0].equalsIgnoreCase("remove")) {
             
-                if(!(sender instanceof Player) || !(sender.getName().equalsIgnoreCase("HeXeRei452"))) {
+                if(!(sender instanceof Player) || !(sender.getName().equalsIgnoreCase("WickedGamingUK"))) {
                     sender.sendMessage(TCP_Util.noPerms);
                     return true;
                 }

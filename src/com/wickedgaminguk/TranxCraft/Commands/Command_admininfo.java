@@ -9,7 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-@CommandPermissions(source = SourceType.ANY, usage = "Usage: /<command> <name>")
+@CommandPermissions(source = SourceType.ANY, usage = "Usage: /<command>")
 public class Command_admininfo extends BukkitCommand {
 
     @Override

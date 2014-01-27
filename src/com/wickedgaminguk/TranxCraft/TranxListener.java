@@ -1,6 +1,7 @@
 package com.wickedgaminguk.TranxCraft;
 
 import com.wickedgaminguk.TranxCraft.UCP.TCP_UCP;
+import net.pravian.bukkitlib.util.ChatUtils;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,6 +18,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 
 public class TranxListener extends TranxCraft implements Listener {
@@ -37,14 +39,15 @@ public class TranxListener extends TranxCraft implements Listener {
     }
     
     @EventHandler(priority = EventPriority.HIGH)
-    public void onPlayerEvent(PlayerJoinEvent event) {
-        int TotalPlayers = plugin.getConfig().getInt("TotalPlayers");
-        
+    public void onPlayerEvent(final PlayerJoinEvent event) {
+        int TotalPlayers = plugin.getConfig().getInt("TotalPlayers");        
         TotalPlayers++;
+        
         plugin.getConfig().set("TotalPlayers", Integer.valueOf(TotalPlayers));
         plugin.saveConfig();
         Bukkit.broadcastMessage(ChatColor.BLUE + "[Player Counter] " + TotalPlayers + " players have joined in total.");
-        Player player = event.getPlayer();
+        
+        final Player player = event.getPlayer();
         if(event.getPlayer().getName().equals("WickedGamingUK")) {
             Bukkit.broadcastMessage(ChatColor.AQUA + event.getPlayer().getName() + " is the " + ChatColor.DARK_RED + "Owner!");
         }
@@ -70,23 +73,23 @@ public class TranxListener extends TranxCraft implements Listener {
         }
         
         if(!(player.hasPermission("tranxcraft.member"))) {
-            player.sendMessage(ChatColor.GREEN + "Welcome to TranxCraft! To continue, please read the rules then accept them by typing /acceptrules.");
-            Bukkit.dispatchCommand(player, "rules");
+            
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Player p = event.getPlayer();
+                    p.sendMessage(ChatColor.GREEN + "Welcome to TranxCraft!\nBefore you can continue, please read the following rules and then accept them with /acceptrules to become Member.");
+                    Bukkit.dispatchCommand(player, "rules");
+                    p.sendMessage(ChatColor.GREEN + "Remember to read these rules and accept them with /acceptrules !");
+                }
+            }.runTaskLater(plugin, 40L);        
         }
-        
     }
     
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLogin(PlayerLoginEvent event) {
         
-        Player player = event.getPlayer();/*
-        String hostname = "play.tranxcraft.com";
-        int port = 25565;
-        String IPmessage = "Please connect on play.tranxcraft.com to play on TranxCraft.";
-        
-        if ((!event.getHostname().equalsIgnoreCase(hostname + ":" + port))) {
-            event.disallow(Result.KICK_OTHER, IPmessage);
-        }*/
+        Player player = event.getPlayer();
         
         if (event.getResult() == PlayerLoginEvent.Result.KICK_FULL) {
             if(TCP_ModeratorList.getAllAdmins().contains(event.getPlayer().getName()) || TCP_ModeratorList.getDonators().contains(event.getPlayer().getName())) {
@@ -185,6 +188,7 @@ public class TranxListener extends TranxCraft implements Listener {
     
     private void kickPlayer(Player player, PlayerLoginEvent event) {
         Player[] players = TranxCraft.plugin.getServer().getOnlinePlayers();
+        
         for (Player p : players) {
             if (TCP_ModeratorList.getAllAdmins().contains(p.getName()) || TCP_ModeratorList.getDonators().contains(p.getName())) {
                 p.kickPlayer(this.kickMessage);

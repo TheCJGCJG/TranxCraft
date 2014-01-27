@@ -16,7 +16,7 @@ public class Command_cake extends BukkitCommand {
 
     @Override
     public boolean run(CommandSender sender, Command command, String commandLabel, String[] args) {
-        if(!(sender.hasPermission("tranxcraft.cake"))) {
+        if(!(sender.hasPermission("tranxcraft.moderator"))) {
             sender.sendMessage(TCP_Util.noPerms);
             return true;
         }
@@ -26,6 +26,7 @@ public class Command_cake extends BukkitCommand {
             player.getInventory().setItem(player.getInventory().firstEmpty(), cake);
             sender.sendMessage(ChatColor.GREEN + "Free Cake For Everyone!");
         }
+        
         return true;
    }
 }

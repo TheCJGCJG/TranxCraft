@@ -18,7 +18,7 @@ public class Command_mong extends BukkitCommand {
     @Override
     public boolean run(CommandSender sender, Command command, String commandLabel, String[] args) {
             
-            if(sender instanceof Player && !(sender.hasPermission("tranxcraft.mong") || sender.isOp())) {
+            if(sender instanceof Player && !(sender.hasPermission("tranxcraft.moderator") || sender.isOp())) {
                 sender.sendMessage(TCP_Util.noPerms);
                 return true;
             }
@@ -60,7 +60,7 @@ public class Command_mong extends BukkitCommand {
             }
             else {
                 Bukkit.broadcastMessage(ChatColor.RED + player.getName() + " is a mong, (s)he better read the rules now.");
-                String Message = ChatColor.RED + "You have been deemed as a mong by " + sender.getName() + " so you'd better read the website (http://www.tranxcraft.com/) and learn the rules, then create a un-ban request on the forums (http://www.tranxcraft.com/forums)";
+                String Message = ChatColor.RED + "You have been deemed as a mong by " + sender.getName() + " so you'd better read the website (https://www.tranxcraft.com/) and learn the rules, then create a un-ban request on the forums (https://www.tranxcraft.com/forums)";
                 player.kickPlayer(Message);
                 TCP_Util.banUsername(player.getName(), Message, null);
                 return true;

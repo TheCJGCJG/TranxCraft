@@ -20,7 +20,7 @@ public class Command_o extends BukkitCommand {
     @Override
     public boolean run(CommandSender sender, Command command, String commandLabel, String[] args) {
         
-        if(sender instanceof Player && !(sender.hasPermission("tranxcraft.adminchat") || sender.isOp())) {
+        if(sender instanceof Player && !(sender.hasPermission("tranxcraft.moderator") || sender.isOp())) {
             sender.sendMessage(TCP_Util.noPerms);
             return true;
         }
@@ -37,13 +37,13 @@ public class Command_o extends BukkitCommand {
             Player player = (Player) sender;
             String playerName = player.getDisplayName();
 
-            Bukkit.broadcast(ChatUtils.colorize(prefix + playerName + ": &b" + msg), "tranxcraft.adminchat");
+            Bukkit.broadcast(ChatUtils.colorize(prefix + playerName + ": &b" + msg), "tranxcraft.moderator");
             TCP_Log.info(ChatColor.stripColor(prefix + playerName + ": " + msg));
         }
         
         if(!(sender instanceof Player)) {
             String playerName = " &4[" + sender.getName() + "]&f";
-            Bukkit.broadcast(ChatUtils.colorize(prefix + playerName + ": &b" + msg), "tranxcraft.adminchat");
+            Bukkit.broadcast(ChatUtils.colorize(prefix + playerName + ": &b" + msg), "tranxcraft.moderator");
             TCP_Log.info(ChatColor.stripColor(prefix + playerName + ": " + msg));
         }
         

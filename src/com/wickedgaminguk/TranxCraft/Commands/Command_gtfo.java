@@ -21,7 +21,7 @@ public class Command_gtfo extends BukkitCommand {
     @Override
     public boolean run(CommandSender sender, Command command, String commandLabel, String[] args) { 
         
-        if(sender instanceof Player && !(sender.hasPermission("tranxcraft.gtfo") || sender.isOp())) {
+        if(sender instanceof Player && !(sender.hasPermission("tranxcraft.moderator") || sender.isOp())) {
             sender.sendMessage(TCP_Util.noPerms);
             return true;
         }
@@ -63,12 +63,7 @@ public class Command_gtfo extends BukkitCommand {
         }
         
         Bukkit.broadcastMessage(ChatColor.RED + "" + sender.getName() + " - banning " + player.getName() + " for " + ban_reason);
-        
-        //rollback
-        //Bukkit.dispatchCommand(sender, "co rollback " + player.getName() + " t:500d r:#global");
-        
-        
-        //TCP_Util.rollbackPlayer(player, TCP_Util.year * 5);
+        Bukkit.dispatchCommand(sender, "co rollback " + player.getName() + " t:500d r:#global");
         
         //set gamemode to survival
         player.setGameMode(GameMode.SURVIVAL);

@@ -17,7 +17,7 @@ public class Command_ucpsync extends BukkitCommand<TranxCraft> {
     @Override
     public boolean run(CommandSender sender, Command command, String commandLabel, String[] args) {
         
-        if(sender instanceof Player && !(sender.hasPermission("tranxcraft.ucpsync") || sender.isOp())) {
+        if(sender instanceof Player && !(sender.hasPermission("tranxcraft.admin") || sender.isOp())) {
             sender.sendMessage(TCP_Util.noPerms);
             return true;
         }

@@ -16,7 +16,7 @@ public class Command_melon extends BukkitCommand {
 
     @Override
     public boolean run(CommandSender sender, Command command, String commandLabel, String[] args) {
-        if(!(sender.hasPermission("tranxcraft.melon"))) {
+        if(!(sender.hasPermission("tranxcraft.moderator"))) {
             sender.sendMessage(TCP_Util.noPerms);
             return true;
         }

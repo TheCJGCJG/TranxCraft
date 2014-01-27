@@ -18,7 +18,7 @@ public class Command_catapult extends BukkitCommand {
     @Override
     public boolean run(CommandSender sender, Command command, String commandLabel, String[] args) {
         
-        if (sender instanceof Player && !(sender.hasPermission("explosivesmite.catapult") || sender.isOp())) {
+        if (sender instanceof Player && !(sender.hasPermission("tranxcraft.moderator") || sender.isOp())) {
             sender.sendMessage(TCP_Util.noPerms);
             return true;
         }
@@ -35,7 +35,7 @@ public class Command_catapult extends BukkitCommand {
             return true;
         }
             
-        if (player.hasPermission("explosivesmite.exempt") || player.isOp()) {
+        if (player.hasPermission("tranxcraft.moderator") || player.isOp()) {
             sender.sendMessage(ChatColor.RED + "You may not catapult this player.");
             return true;
         }

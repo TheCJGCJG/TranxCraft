@@ -50,7 +50,7 @@ public class Command_tranxcraft extends BukkitCommand {
         
        if(args[0].equalsIgnoreCase("reload")) {
            
-           if(!(sender.hasPermission("tranxcraft.reload") || sender.isOp())){
+           if(!(sender.hasPermission("tranxcraft.exec") || sender.isOp())) {
                sender.sendMessage(TCP_Util.noPerms);               
                return true;
            }
@@ -72,6 +72,7 @@ public class Command_tranxcraft extends BukkitCommand {
                             sender.sendMessage(ChatColor.RED + "[TranxCraft] Plugin Invalid.");
                             return true;
                         }
+                        
                         Plugin tPlugin = Bukkit.getPluginManager().getPlugin(args[1]);
                         TCP_PluginHandler.reloadPlugin(tPlugin);
                         sender.sendMessage(ChatColor.GREEN + "[TranxCraft] Plugin %a reloaded.".replaceAll("%a", tPlugin.getName()));
@@ -81,18 +82,20 @@ public class Command_tranxcraft extends BukkitCommand {
                 }
                 
                 if(args[0].equalsIgnoreCase("enable")) {
-                    if(!(sender.hasPermission("tranxcraft.enable"))){
+                    if(!(sender.hasPermission("tranxcraft.exec"))) {
                         sender.sendMessage(TCP_Util.noPerms);
                         return true;
                     }
+                    
                     if(args.length > 2|| args.length == 0){
                         sender.sendMessage(TCP_Util.Invalid_Usage);
                         return false;
                     }
+                    
                     if(Bukkit.getPluginManager().isPluginEnabled(args[1])) {
                         sender.sendMessage(ChatColor.RED + "[TranxCraft] Plugin Already Enabled.");
                         return true;
-                    }
+                    }                    
                     else {
                         Plugin tPlugin = Bukkit.getPluginManager().getPlugin(args[1]);
                         TCP_PluginHandler.enablePlugin(tPlugin);
@@ -100,25 +103,28 @@ public class Command_tranxcraft extends BukkitCommand {
                         return true;
                     }
                 }
+                
                 if(args[0].equalsIgnoreCase("disable")) {
-                    if(!(sender.hasPermission("tranxcraft.disable"))) {
+                    if(!(sender.hasPermission("tranxcraft.exec"))) {
                         sender.sendMessage(TCP_Util.noPerms);
                         return true;
                     }
-                    if(args.length > 2 || args.length == 0){
+                    
+                    if(args.length > 2 || args.length == 0) {
                         sender.sendMessage(TCP_Util.Invalid_Usage);
                         return false;
                     }
+                    
                     if(!Bukkit.getPluginManager().isPluginEnabled(args[1])) {
                         sender.sendMessage(ChatColor.RED + "[TranxCraft] Plugin Already Disabled.");
                         return true;
-                    }
+                    }                    
                     else {
                         Plugin tPlugin = Bukkit.getPluginManager().getPlugin(args[1]);
                         TCP_PluginHandler.disablePlugin(tPlugin);
-                        sender.sendMessage(ChatColor.RED + "[TranxCraft] Plugin " + tPlugin + " is disabled.");
+                        sender.sendMessage(ChatColor.RED + "[TranxCraft] Plugin " + tPlugin + " is disabled.");                    
+                        return true;
                     }
-                    return true;
                 }
                 
                 if(args[0].equalsIgnoreCase("system")) {
@@ -127,7 +133,7 @@ public class Command_tranxcraft extends BukkitCommand {
                     
                     String playerName = player.getName();
                     
-                    if(sender instanceof Player && !(sender.hasPermission("tranxcraft.system"))) {
+                    if(sender instanceof Player && !(sender.hasPermission("tranxcraft.owner"))) {
                     sender.sendMessage(TCP_Util.noPerms);
                     return true;
                     }
@@ -140,11 +146,12 @@ public class Command_tranxcraft extends BukkitCommand {
                             Bukkit.broadcastMessage(ChatColor.GREEN + playerName + " has been promoted to Moderator, congratulations!");
                             Bukkit.dispatchCommand(sender, "manuadd " + playerName + " moderator Spawn");
                             TCP_mail.send(RecipientType.ALL, "TranxCraft Reports - " + playerName + " has been promoted to Moderator!", "Hey there, just to let you know, " + playerName + " has been promoted to Moderator by " + sender.getName());
+                            
                             try {
                                 TCP_Twitter.tweet("Say congratulations to " + playerName + ", they have been promoted to Moderator status by " + sender.getName() + "!");
                             }
                             catch (TwitterException | IOException ex) {
-                                Logger.getLogger(Command_tranxcraft.class.getName()).log(Level.SEVERE, null, ex);
+                                TCP_Log.severe("Something went wrong while tweeting \n" + ex);
                             }
                         }
                         
@@ -155,11 +162,12 @@ public class Command_tranxcraft extends BukkitCommand {
                             Bukkit.broadcastMessage(ChatColor.GREEN + playerName + " has been promoted to Admin, congratulations!");
                             Bukkit.dispatchCommand(sender, "manuadd " + playerName + " admin Spawn");
                             TCP_mail.send(RecipientType.ALL, "TranxCraft Reports - " + playerName + " has been promoted to Admin!", "Hey there, just to let you know, " + playerName + " has been promoted to Admin by " + sender.getName());
+                            
                             try {
                                 TCP_Twitter.tweet("Say congratulations to " + playerName + ", they have been promoted to Admin status by " + sender.getName() + "!");
                             }
                             catch (TwitterException | IOException ex) {
-                                Logger.getLogger(Command_tranxcraft.class.getName()).log(Level.SEVERE, null, ex);
+                                TCP_Log.severe("Something went wrong while tweeting \n" + ex);
                             }
                         }
                         
@@ -170,11 +178,12 @@ public class Command_tranxcraft extends BukkitCommand {
                             Bukkit.broadcastMessage(ChatColor.GREEN + playerName + " has been promoted to Admin, congratulations!");
                             Bukkit.dispatchCommand(sender, "manuadd " + playerName + " leadadmin Spawn");
                             TCP_mail.send(RecipientType.ALL, "TranxCraft Reports - " + playerName + " has been promoted to Lead Admin!", "Hey there, just to let you know, " + playerName + " has been promoted to Lead Admin by " + sender.getName());
+                            
                             try {
                                 TCP_Twitter.tweet("Say congratulations to " + playerName + ", they have been promoted to Lead Admin status by " + sender.getName() + "!");
                             }
                             catch (TwitterException | IOException ex) {
-                                Logger.getLogger(Command_tranxcraft.class.getName()).log(Level.SEVERE, null, ex);
+                                TCP_Log.severe("Something went wrong while tweeting \n" + ex);
                             }
                         }
                         
@@ -185,11 +194,12 @@ public class Command_tranxcraft extends BukkitCommand {
                             Bukkit.broadcastMessage(ChatColor.GREEN + playerName + " has been promoted to an Executive, congratulations!");
                             Bukkit.dispatchCommand(sender, "manuadd " + playerName + " executive Spawn");
                             TCP_mail.send(RecipientType.ALL, "TranxCraft Reports - " + playerName + " has been promoted to Executive!", "Hey there, just to let you know, " + playerName + " has been promoted to Executive by " + sender.getName());
+                            
                             try {
                                 TCP_Twitter.tweet("Say congratulations to " + playerName + ", they have been promoted to Executive status by " + sender.getName() + "!");
                             }
                             catch (TwitterException | IOException ex) {
-                                Logger.getLogger(Command_tranxcraft.class.getName()).log(Level.SEVERE, null, ex);
+                                TCP_Log.severe("Something went wrong while tweeting \n" + ex);
                             }
                         }
                      }
@@ -202,11 +212,12 @@ public class Command_tranxcraft extends BukkitCommand {
                             Bukkit.broadcastMessage(ChatColor.RED + playerName + " has been removed from Moderator!");
                             Bukkit.dispatchCommand(sender, "manuadd " + playerName + " member Spawn");
                             TCP_mail.send(RecipientType.ALL, "TranxCraft Reports - " + playerName + " has been removed from Moderator", "Hey there, just to let you know, " + playerName + " has been removed from Moderator by " + sender.getName());
+                            
                             try {
                                 TCP_Twitter.tweet(playerName + " has been removed from Moderator by " + sender.getName() + "!");
                             }
                             catch (TwitterException | IOException ex) {
-                                Logger.getLogger(Command_tranxcraft.class.getName()).log(Level.SEVERE, null, ex);
+                                TCP_Log.severe("Something went wrong while tweeting \n" + ex);
                             }
                         }
                         
@@ -217,11 +228,12 @@ public class Command_tranxcraft extends BukkitCommand {
                             Bukkit.broadcastMessage(ChatColor.RED + playerName + " has been removed from Admin!");
                             Bukkit.dispatchCommand(sender, "manuadd " + playerName + " member Spawn");
                             TCP_mail.send(RecipientType.ALL, "TranxCraft Reports - " + playerName + " has been removed from Admin", "Hey there, just to let you know, " + playerName + " has been removed from Admin by " + sender.getName());
+                            
                             try {
                                 TCP_Twitter.tweet(playerName + " has been removed from Admin by " + sender.getName() + "!");
                             }
                             catch (TwitterException | IOException ex) {
-                                Logger.getLogger(Command_tranxcraft.class.getName()).log(Level.SEVERE, null, ex);
+                                TCP_Log.severe("Something went wrong while tweeting \n" + ex);
                             }
                         }
                         
@@ -232,11 +244,12 @@ public class Command_tranxcraft extends BukkitCommand {
                             Bukkit.broadcastMessage(ChatColor.RED + playerName + " has been removed from being a lead Admin!");
                             Bukkit.dispatchCommand(sender, "manuadd " + playerName + " member Spawn");
                             TCP_mail.send(RecipientType.ALL, "TranxCraft Reports - " + playerName + " has been removed from Lead Admin", "Hey there, just to let you know, " + playerName + " has been removed from Lead Admin by " + sender.getName());
+                            
                             try {
                                 TCP_Twitter.tweet(playerName + " has been removed from Lead Admin by " + sender.getName() + "!");
                             }
                             catch (TwitterException | IOException ex) {
-                                Logger.getLogger(Command_tranxcraft.class.getName()).log(Level.SEVERE, null, ex);
+                                TCP_Log.severe("Something went wrong while tweeting \n" + ex);
                             }
                         }
                         
@@ -247,11 +260,12 @@ public class Command_tranxcraft extends BukkitCommand {
                             Bukkit.broadcastMessage(ChatColor.RED + playerName + " has been removed from being an Executive!");
                             Bukkit.dispatchCommand(sender, "manuadd " + playerName + " member Spawn");
                             TCP_mail.send(RecipientType.ALL, "TranxCraft Reports - " + playerName + " has been removed from Executive", "Hey there, just to let you know, " + playerName + " has been removed from Executive by " + sender.getName());
+                            
                             try {
                                 TCP_Twitter.tweet(playerName + " has been removed from Executive by " + sender.getName() + "!");
                             }
                             catch (TwitterException | IOException ex) {
-                                Logger.getLogger(Command_tranxcraft.class.getName()).log(Level.SEVERE, null, ex);
+                                TCP_Log.severe("Something went wrong while tweeting \n" + ex);
                             }
                         }
                      }
